@@ -1,7 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon.png" type="image/png">
+    <title>Temperature Control HMI</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/dark-styles.css" id="dark-styles" disabled>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  <!-- Icon database -->
+</head>
+<header style="position: relative; width: 100%;">
+    <div style="display: flex; justify-content: flex-end;">
+        <button id="theme-toggle">Dark Mode</button>
+    </div>
+</header>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+<div class="container">
+    <h1 class="mt-5">Temperature Control System</h1>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="status" aria-selected="true">Status</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="set-tab" data-toggle="tab" href="#set" role="tab" aria-controls="set" aria-selected="false">Settings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history" aria-selected="false">Historical Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Info</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="status" role="tabpanel" aria-labelledby="status-tab">
+            <div class="mt-3">
+                <h2>Main Page</h2>
+            </div>
+
+        </div>
+
+
+
+
+        <div class="tab-pane fade" id="set" role="tabpanel" aria-labelledby="set-tab">
+            <div class="mt-3">
+
+                <h3>Settings</h3>
+                <p class="adjustment-text">High alarm limit</p>
+
+
+            </div>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+            <div class="mt-3">
+                <h3>Historical Data</h3>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="mt-3">
+                <h3>Information</h3>
+                <p>Welcome to the <strong>Temperature Control System</strong>. This web-based Human-Machine Interface (HMI) allows you to monitor and adjust parameters related to temperature control. Here's what you can do on this platform:</p>
+
+                <h4>Status Monitoring</h4>
+                <p>In the <strong>Status</strong> tab, you can view the current temperature in real-time, along with the last updated time. You will also see if there are any active alarms, alerting you when the temperature goes outside the set boundaries.</p>
+
+                <h4>Settings Adjustment</h4>
+                <p>In the <strong>Settings</strong> tab, you can adjust the high and low alarm limits to define acceptable temperature ranges. If the temperature goes beyond these limits, an alarm will be triggered. You can also fine-tune the system's <strong>Filter Alpha</strong>, which controls the sensitivity of the temperature filter.</p>
+
+                <h4>Historical Data</h4>
+                <p>The <strong>Historical Data</strong> tab allows you to analyze past temperature readings. You can select a custom date range to fetch historical data and visualize it in a dynamic graph.</p>
+
+                <h4>Dark Mode Toggle</h4>
+                <p>You can switch between light and dark modes using the <strong>Dark Mode</strong> button in the top-right corner, allowing you to choose a theme that’s more comfortable for you.</p>
+
+                <h4>How it Works</h4>
+                <p>The system connects to a backend server that continuously monitors the temperature through sensors. Real-time data is fetched and displayed dynamically. You can interact with the system by adjusting parameters, which are immediately applied, and view historical data for trend analysis.</p>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<footer style="position: relative; width: 100%;">
+    <div class="container">
+        <p class="text-center">&copy; 2024 Magnus Eide. All rights reserved.</p>
+    </div>
+</footer>
+
 </body>
 </html>

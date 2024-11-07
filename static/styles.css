@@ -1,0 +1,153 @@
+/* Default light mode styles */
+/* Styles for the header */
+
+:root {
+    --main-background-color: #f9f9f9;
+    --chart-line-color: #073bbf;
+    --text-color: #000000;
+}
+
+header {
+    max-width: 1200px; /* Optional: set a max width for the header */
+    margin: 0 auto;    /* Center the header on larger screens */
+    padding: 10px;     /* Add some padding for spacing */
+}
+
+body {
+    background-color: var(--main-background-color); /* white background ffffff*/
+    color: #000000; /* black text */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+p.adjustment-text {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+p.alarm-text {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: row; /* Align children horizontally */
+    align-items: center; /* Align items to the start */
+}
+
+input {
+    background-color: #ccc; /* Bootstrap primary color */
+    color: black;              /* Text color */
+    border: none;              /* Remove default border */
+    border-radius: 5px;       /* Rounded corners */
+    padding: 5px 10px;       /* Vertical and horizontal padding */
+    font-size: 15px;          /* Font size */
+    cursor: pointer;           /* Pointer cursor on hover */
+    transition: background-color 0.2s ease, transform 0.2s; /* Smooth transition */
+    margin: 3px
+}
+
+.btn-group {
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+
+button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;              /* Text color */
+    border: none;              /* Remove default border */
+    border-radius: 5px;       /* Rounded corners */
+    padding: 5px 10px;       /* Vertical and horizontal padding */
+    font-size: 16px;          /* Font size */
+    cursor: pointer;           /* Pointer cursor on hover */
+    transition: background-color 0.2s ease, transform 0.2s; /* Smooth transition */
+    margin: 10px
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+    transform: scale(1.02);     /* Slightly enlarge the button */
+}
+
+
+.btn-adjust {
+    display: flex; /* Enable flexbox */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    width: 35px; /* Set a fixed width for the buttons */
+    height: 35px; /* Set a fixed height for the buttons */
+    margin: 0px; /* Remove margin to stack buttons without space */
+    border: 1px solid #6c757d; /* Customize border color */
+    background-color: #bfcdf2; /* Background color*/
+    color: #6c757d; /* Text color */
+    font-size: 20px; /* Adjust font size as needed */
+
+}
+
+.btn-adjust:hover {
+    background-color: #1b75e2;
+    /*height: 38px; */
+    width: 39px;
+}
+
+.btn-adjust:first-child {
+    border-radius: 10px 10px 10px 10px;
+}
+
+.btn-adjust:last-child {
+    border-radius: 10px 10px 10px 10px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 110px 75px auto;
+    gap: 10px;
+}
+
+.grid-item {
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  font-size: 30px;
+  text-align: center;
+}
+
+
+.nav.nav-tabs .nav-link.active {
+    background: linear-gradient(0deg, transparent, #d9d9d9);
+    border: none;
+    border-bottom: 3px solid var(--main-background-color);
+}
+
+/* Styling for the chart container */
+.chart-container {
+    background-color: #f9f9f9; /* Light background color */
+    border: 1px solid #ddd;    /* Light gray border */
+    border-radius: 8px;        /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 15px;             /* Padding around the canvas */
+    margin: 20px 0;           /* Margin above and below the container */
+}
+
+/* Styling for the canvas itself */
+canvas {
+    display: block;            /* Ensures there is no space below the canvas */
+    width: 100% !important;   /* Full width of the container */
+    height: auto !important;  /* Maintain aspect ratio */
+}
+
+footer {
+    background-color: var(--main-background-color);
+    color: #000; /* black text */
+    padding: 20px 0;
+    width: 100%;
+    bottom: 0;
+    margin-top: auto;
+}
+
+
+
