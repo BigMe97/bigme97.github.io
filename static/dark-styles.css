@@ -1,14 +1,21 @@
 :root {
     --main-background-color: #222;
-    --chart-line-color: #073bbf;
     --text-color: #ddd;
 }
+
+header {
+    background-color: var(--main-background-color);
+
+}
+
 body {
     /*background-color: var(--main-background-color);*/
     color: #ddd;
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+}
+
+.image-container {
+    background-color: #444;
 }
 
 input {
@@ -26,53 +33,21 @@ button:hover {
     background-color: #555; /* Darker shade for hover */
 }
 
-
-.btn-adjust {
-    /* ... other styles ... */
-    background-color: #444;
-    color: #ddd;
-}
-
-.btn-adjust:hover {
-    background-color: #555;
-}
-
-.btn-adjust:first-child,
-.btn-adjust:last-child {
-    /* ... other styles ... */
-}
-
-.grid-container {
-    /* ... other styles ... */
-}
-
-.grid-item {
-    /* ... other styles ... */
-}
-
 .nav-link {
     color: #094cf6;
 }
 
-.nav.nav-tabs .nav-link.active {
+nav-tabs{
+    /*background-color: var(--main-background-color);*/
     color: #68737d;
     background: linear-gradient(0deg, transparent, #191919);
 
 }
 
-.chart-container {
-    background-color: #333; /* Light background color */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Subtle shadow for depth */
-
-}
 
 footer {
     /*background-color: #222;*/
     color: #ddd;
-    padding: 20px 0;
-    width: 100%;
-    bottom: 0;
-    margin-top: auto;
 }
 
 

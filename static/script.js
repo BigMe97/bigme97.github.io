@@ -19,18 +19,23 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
 function setDarkTheme(isDarkMode){
     var themeToggleBtn = document.getElementById('theme-toggle');
     var darkStyles = document.getElementById('dark-styles');
+    var icon = themeToggleBtn.querySelector('i');
     if (isDarkMode) {
         // If it is, enable it and change the button text
         darkStyles.disabled = false;
         localStorage.setItem('darkMode', isDarkMode);
         console.log("Stored dark theme in local storage");
-        themeToggleBtn.textContent = 'Light Mode';
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+        // themeToggleBtn.textContent = 'Light Mode';
     } else {
         // If it isn't, disable it and change the button text
         darkStyles.disabled = true;
         localStorage.setItem('darkMode', isDarkMode);
         console.log("Stored light theme in local storage");
-        themeToggleBtn.textContent = 'Dark Mode';
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+        // themeToggleBtn.textContent = 'Dark Mode';
     }
 }
 

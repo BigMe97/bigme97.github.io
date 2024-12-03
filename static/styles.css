@@ -3,14 +3,7 @@
 
 :root {
     --main-background-color: #f9f9f9;
-    --chart-line-color: #073bbf;
     --text-color: #000000;
-}
-
-header {
-    max-width: 1200px; /* Optional: set a max width for the header */
-    margin: 0 auto;    /* Center the header on larger screens */
-    padding: 10px;     /* Add some padding for spacing */
 }
 
 body {
@@ -19,17 +12,111 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 615px;
+    margin: 0;
+    padding: 0;
 }
 
-p.adjustment-text {
-    margin-top: 20px;
-    margin-bottom: 5px;
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    min-width: 615px;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 1000;
 }
 
-p.alarm-text {
+.header-top {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-center {
+    text-align: center;
+}
+.header-center h1 {
+    margin: 10px;
+}
+.header-left {
+    text-align: left;
+    max-width: 100px;
+}
+.header-right {
+    text-align: right;
+    max-width: 100px;
+}
+
+a {
+    color: var(--text-color); /* Replace with your desired color (e.g., orange) */
+}
+
+/* Change color on hover */
+a:hover {
+    color: var(--text-color);
+    text-decoration: underline; /* Add underline on hover if desired */
+}
+
+.nav-tabs {
+    width: 100%;
     margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 30px;
+    display: flex;
+    justify-content: left;
+}
+
+.nav-item {
+    margin: 0 5px;
+}
+
+.nav-link {
+    color: var(--text-color);
+    padding: 10px 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: #e9ecef;
+    color: #495057;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.container {
+    margin-top: 120px; /* Adjust this value based on the combined height of your header and nav-tabs */
+    padding: 20px;
+}
+
+section {
+    padding-top: 150px; /* Space to accommodate fixed header during navigation */
+    margin-top: -120px; /* Negative margin aligns the section properly */
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+}
+
+.image-container img {
+    width: 100%;
+    max-width: 800px;
+    min-width: 300px;
+    height: auto;
 }
 
 .input-group {
@@ -55,7 +142,6 @@ input {
     flex-wrap: wrap;
 }
 
-
 button {
     background-color: #007bff; /* Bootstrap primary color */
     color: white;              /* Text color */
@@ -75,70 +161,6 @@ button:hover {
 }
 
 
-.btn-adjust {
-    display: flex; /* Enable flexbox */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
-    width: 35px; /* Set a fixed width for the buttons */
-    height: 35px; /* Set a fixed height for the buttons */
-    margin: 0px; /* Remove margin to stack buttons without space */
-    border: 1px solid #6c757d; /* Customize border color */
-    background-color: #bfcdf2; /* Background color*/
-    color: #6c757d; /* Text color */
-    font-size: 20px; /* Adjust font size as needed */
-
-}
-
-.btn-adjust:hover {
-    background-color: #1b75e2;
-    /*height: 38px; */
-    width: 39px;
-}
-
-.btn-adjust:first-child {
-    border-radius: 10px 10px 10px 10px;
-}
-
-.btn-adjust:last-child {
-    border-radius: 10px 10px 10px 10px;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: 110px 75px auto;
-    gap: 10px;
-}
-
-.grid-item {
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  padding: 20px;
-  font-size: 30px;
-  text-align: center;
-}
-
-
-.nav.nav-tabs .nav-link.active {
-    background: linear-gradient(0deg, transparent, #d9d9d9);
-    border: none;
-    border-bottom: 3px solid var(--main-background-color);
-}
-
-/* Styling for the chart container */
-.chart-container {
-    background-color: #f9f9f9; /* Light background color */
-    border: 1px solid #ddd;    /* Light gray border */
-    border-radius: 8px;        /* Rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    padding: 15px;             /* Padding around the canvas */
-    margin: 20px 0;           /* Margin above and below the container */
-}
-
-/* Styling for the canvas itself */
-canvas {
-    display: block;            /* Ensures there is no space below the canvas */
-    width: 100% !important;   /* Full width of the container */
-    height: auto !important;  /* Maintain aspect ratio */
-}
 
 footer {
     background-color: var(--main-background-color);
