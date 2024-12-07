@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="static/favicon.png" type="image/png">
-    <title>Report page</title>
+    <title>Process Control From Web Application</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/styles.css">
@@ -19,22 +19,32 @@
 <header>
     <div class="header-top">
         <div class="header-left">
-            <button id="menu-toggle" aria-label="Menu">
+            <!--<button id="menu-toggle" aria-label="Menu">
                 <i class="fas fa-bars"></i>
-            </button>
+            </button>-->
         </div>
         <div class="header-center">
-            <h1>Control system report</h1>
+            <h1>Process Control From Web Application</h1>
         </div>
         <div class="header-right">
-            <button id="theme-toggle" aria-label="Toggle Dark Mode">
-                <i class="fas fa-moon"></i>
-            </button>
+            <div class="language-switcher">
+                <button class="lang-button" onclick="window.location.href='index_no.html'" aria-label="Switch to Norwegian">
+                    <img src="static/no-flag.svg" alt="Norwegian flag" class="flag-icon">
+                </button>
+            </div>
+            <div class="theme-switcher">
+                <button id="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </div>
     </div>
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs" id="myTab" role="tablist" aria-label="Content navigation">
         <li class="nav-item">
-            <a class="nav-link active" id="intro-tab" href="#introduction" role="tab" aria-controls="intro" aria-selected="true">Introduction</a>
+            <a class="nav-link active" id="video-tab" href="#video" role="tab" aria-controls="video" aria-selected="true">Video</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="intro-tab" href="#introduction" role="tab" aria-controls="intro" aria-selected="false">Introduction</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="method-tab" href="#methods" role="tab" aria-controls="method" aria-selected="false">Methods</a>
@@ -51,43 +61,143 @@
     </ul>
 </header>
 
+
+
+
 <div class="container">
+    <section id="video">
+        <h2>Video</h2>
+        <p>This video goes through the project, with  code, and shows the system in action.</p>
+        <div class="video-container">
+            <iframe
+                src="https://www.youtube.com/embed/BMDEhstkpa0"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
     <section id="introduction">
         <h2>Introduction</h2>
-        <p>This is the introduction section.</p>
-        <div class="image-container">
-            <img src="static/SystemSketch3.png" alt=System_Sketch" class="img-fluid">
+        <p>
+            The project sought out to make a control system for an air heater using a web application as a user interface.
+            There are four main aspects to the final solution that are shown in the <a href="#img_system_sketch">system sketch</a> below.
+            To the left there is the controller itself, in the middle an interface between the controllers and the sql database.
+            To the right the database itself and a web page that displays the current status of the system, and allows the user to control the system.
+            These services are hosted in azure and can be accessed from any internet connected device.
+
+        </p>
+        <div class="image-container" id="img_system_sketch">
+            <img src="static/SystemSketch3.png" alt="System_Sketch" class="img-fluid">
+            <p>Overview of the system architecture with locally hosted services on the left, and Azure hosted services on the right.</p>
         </div>
     </section>
+
+
+
     <section id="methods">
         <h2>Methods</h2>
-        <p>This is the methods section.</p>
-        <p>The microcontroller <a href="#img_esp8266">ESP8266</a></p>
-        <div class="image-container">
-            <img src="static/Raspberry-Pi-5.webp" alt="RaspberryPi" class="img-fluid">
-            <p>The raspberry Pi 5</p>
-        </div>
+        
+        <h3>Controller</h3>
+        <p>
+            The controller of the system is a ESP8266 microcontroller, shown in the <a href="#img_esp8266">image below</a>. 
+            It is responsible for reading the temperature from the sensor and controllling the power to the heater element. 
+            The ESP8266 is a tiny computer that has wifi and bluetooth capabilities, the board used in this project measures only 35mm x 26mm.
+            It is powered by a 5V supply but can only output 3.3V,
+            therefor a voltage divider is used to step down the voltage from the temperature sensor, 
+            and a digital to analog converter (DAC) is used to control the power to the heater element.
+            The DAC is a mcp4725, and the voltage divider is a voltage divider circuit made out of five identical resistors.
+        </p>
+        <p>
+            As a controller algorithm a PID controller is used. It is a very simple controller that is easy to implement and understand.
+            In C++ it can be implemented as a class like in the code below.
+            The PID parameters can be changed by publishing a new value to the MQTT topic 
+            <a href="#" class="mqtt-topic" data-topic="airheater/PID" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "kP": 0.01,
+                "tI": 100000.0,
+                "tD": 0.0
+            }'>airheater/PID</a>.
+            To make the MQTT topics tidy all the topics are prefixed with "airheater/" 
+            and a unique device identifier in the JSON payload to distinguish between multiple controllers.
+            The controller is also publishing its state to the MQTT topics 
+            <a href="#" class="mqtt-topic" data-topic="airheater/temperature" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "temperature": 20.1,
+                "unit": "C"
+            }'>airheater/temperature</a>
+             and 
+            <a href="#" class="mqtt-topic" data-topic="airheater/controls" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "heaterPower": 0.0,
+                "heaterUnit": "V",
+                "fanPower": 3.0,
+                "fanUnit": "V"
+            }'>airheater/controls</a>.
+            
+
+        </p>
 
         <div class="image-container" id="img_esp8266">
-            <img src="static/ESP8266.png" alt="RaspberryPi" class="img-fluid">
-            <p>The raspberry Pi 5</p>
+            <img src="static/ESP8266.png" alt="ESP8266" class="img-fluid" style="max-width: 400px">
+            <p>The ESP8266 microcontroller is responsible for...</p>
+        </div>
+        <p>
+            The voltage divider is a circuit made out of five identical resistors.
+        </p>
+        <div class="image-container" id="img_voltage_divider">
+            <img src="static/VoltageDevider.svg" alt="Voltage_Divider" class="img-fluid" style="max-width: 400px">
+            <p>The voltage devider is a circuit made out of five identical resistors.</p>
         </div>
 
-        <p>This is the methods section.</p>
+        <h3>SQL-MQTT interface</h3>
+
+        <p>
+            The Raspberry Pi 5 serves as the main controller, handling...
+
+        </p>
+
+        <div class="image-container" id="img_raspberrypi5">
+            <img src="static/Raspberry-Pi-5.png" alt="RaspberryPi" class="img-fluid" style="max-width: 400px">
+            <p>The Raspberry Pi 5 serves as the interface between mqtt and the sql database...</p>
+        </div>
+
+        
+
+        
     </section>
+
+
+
     <section id="results">
         <h2>Results</h2>
         <p>This is the results section.</p>
     </section>
+
+
+
     <section id="discussion">
         <h2>Discussion</h2>
         <p>This is the discussion section.</p>
     </section>
+
+
+
     <section id="resources">
         <h2>Resources</h2>
         <p>This is the resources section.</p>
     </section>
 </div>
+
+
+
+
+
 
 <footer style="position: relative; width: 100%;">
     <div class="container">
@@ -95,5 +205,13 @@
     </div>
 </footer>
 <script src="static/script.js"></script>
+
+<div class="mqtt-popup" id="mqtt-popup">
+    <div class="mqtt-popup-content">
+        <h4>Example of MQTT Topic: <span id="mqtt-topic-name"></span></h4>
+        <pre><code id="mqtt-example"></code></pre>
+    </div>
+</div>
+
 </body>
 </html>

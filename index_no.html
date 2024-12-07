@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon.png" type="image/png">
+    <title>Prosesskontroll Fra Webapplikasjon</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/dark-styles.css" id="dark-styles" disabled>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<header>
+    <div class="header-top">
+        <div class="header-left">
+        </div>
+        <div class="header-center">
+            <h1>Prosesskontroll Fra Webapplikasjon</h1>
+        </div>
+        <div class="header-right">
+            <div class="language-switcher">
+                <button class="lang-button" onclick="window.location.href='index.html'" aria-label="Bytt til engelsk">
+                    <img src="static/gb-flag.svg" alt="Britisk flagg" class="flag-icon">
+                </button>
+            </div>
+            <div class="theme-switcher">
+                <button id="theme-toggle" aria-label="Bytt Mørk Modus">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist" aria-label="Innholdsnavigasjon">
+        <li class="nav-item">
+            <a class="nav-link active" id="video-tab" href="#video" role="tab" aria-controls="video" aria-selected="true">Video</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="intro-tab" href="#introduction" role="tab" aria-controls="intro" aria-selected="false">Introduksjon</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="method-tab" href="#methods" role="tab" aria-controls="method" aria-selected="false">Metoder</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="result-tab" href="#results" role="tab" aria-controls="result" aria-selected="false">Resultater</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="discussion-tab" href="#discussion" role="tab" aria-controls="discus" aria-selected="false">Diskusjon</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="resource-tab" href="#resources" role="tab" aria-controls="source" aria-selected="false">Ressurser</a>
+        </li>
+    </ul>
+</header>
+
+<div class="container">
+    <section id="video">
+        <h2>Video</h2>
+        <p>Denne videoen går gjennom prosjektet, med kode, og viser systemet i drift.</p>
+        <div class="video-container">
+            <iframe
+                src="https://www.youtube.com/embed/BMDEhstkpa0"
+                title="YouTube video avspiller"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+    <section id="introduction">
+        <h2>Introduksjon</h2>
+        <p>
+            Prosjektet hadde som mål å lage et kontrollsystem for en luftvarmer ved hjelp av en webapplikasjon som brukergrensesnitt.
+            Det er fire hovedaspekter ved den endelige løsningen som vises i <a href="#img_system_sketch">systemskissen</a> nedenfor.
+            Til venstre er selve kontrolleren, i midten et grensesnitt mellom kontrollerne og SQL-databasen.
+            Til høyre er selve databasen og en nettside som viser systemets nåværende status og lar brukeren kontrollere systemet.
+            Disse tjenestene er hostet i Azure og kan nås fra enhver internettilkoblet enhet.
+        </p>
+        <div class="image-container" id="img_system_sketch">
+            <img src="static/SystemSketch3.png" alt="System_Skisse" class="img-fluid">
+            <p>Oversikt over systemarkitekturen med lokalt hostede tjenester til venstre og Azure-hostede tjenester til høyre.</p>
+        </div>
+    </section>
+
+    <section id="methods">
+        <h2>Metoder</h2>
+        
+        <h3>Kontroller</h3>
+        <p>
+            Systemets kontroller er en ESP8266 mikrokontroller, vist i <a href="#img_esp8266">bildet nedenfor</a>. 
+            Den er ansvarlig for å lese temperaturen fra sensoren og kontrollere effekten til varmeelementet. 
+            ESP8266 er en liten datamaskin med wifi- og bluetooth-kapabiliteter, kortet som brukes i dette prosjektet måler kun 35mm x 26mm.
+            Den drives av en 5V strømforsyning, men kan bare gi ut 3,3V,
+            derfor brukes en spenningsdeler for å redusere spenningen fra temperatursensoren, 
+            og en digital-til-analog-omformer (DAC) brukes til å kontrollere effekten til varmeelementet.
+            DAC-en er en mcp4725, og spenningsdeleren er en krets laget av fem identiske motstander.
+        </p>
+        <p>
+            Som kontrolleralgoritme brukes en PID-kontroller. Det er en veldig enkel kontroller som er lett å implementere og forstå.
+            I C++ kan den implementeres som en klasse som vist i koden nedenfor.
+            PID-parametrene kan endres ved å publisere en ny verdi til MQTT-emnet 
+            <a href="#" class="mqtt-topic" data-topic="airheater/PID" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "kP": 0.01,
+                "tI": 100000.0,
+                "tD": 0.0
+            }'>airheater/PID</a>.
+            For å holde MQTT-emnene ryddige er alle emnene prefikset med "airheater/" 
+            og en unik enhetsidentifikator i JSON-lasten for å skille mellom flere kontrollere.
+            Kontrolleren publiserer også sin tilstand til MQTT-emnene 
+            <a href="#" class="mqtt-topic" data-topic="airheater/temperature" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "temperature": 20.1,
+                "unit": "C"
+            }'>airheater/temperature</a>
+             og 
+            <a href="#" class="mqtt-topic" data-topic="airheater/controls" data-example='{
+                "sensorID": "AirHeaterOne",
+                "timestamp": 1710945600,
+                "heaterPower": 0.0,
+                "heaterUnit": "V",
+                "fanPower": 3.0,
+                "fanUnit": "V"
+            }'>airheater/controls</a>.
+        </p>
+
+        <div class="image-container" id="img_esp8266">
+            <img src="static/ESP8266.png" alt="ESP8266" class="img-fluid" style="max-width: 400px">
+            <p>ESP8266 mikrokontrolleren er ansvarlig for...</p>
+        </div>
+
+        <p>
+            Spenningsdeleren er en krets laget av fem identiske motstander.
+        </p>
+        <div class="image-container" id="img_voltage_divider">
+            <img src="static/VoltageDevider.svg" alt="Spenningsdeler" class="img-fluid" style="max-width: 400px">
+            <p>Spenningsdeleren er en krets laget av fem identiske motstander.</p>
+        </div>
+
+        <h3>SQL-MQTT grensesnitt</h3>
+        <p>
+            Raspberry Pi 5 fungerer som hovedkontroller, og håndterer...
+        </p>
+
+        <div class="image-container" id="img_raspberrypi5">
+            <img src="static/Raspberry-Pi-5.png" alt="RaspberryPi" class="img-fluid" style="max-width: 400px">
+            <p>Raspberry Pi 5 fungerer som grensesnittet mellom MQTT og SQL-databasen...</p>
+        </div>
+    </section>
+
+    <section id="results">
+        <h2>Resultater</h2>
+        <p>Dette er resultatseksjonen.</p>
+    </section>
+
+    <section id="discussion">
+        <h2>Diskusjon</h2>
+        <p>Dette er diskusjonsseksjonen.</p>
+    </section>
+
+    <section id="resources">
+        <h2>Ressurser</h2>
+        <p>Dette er ressursseksjonen.</p>
+    </section>
+</div>
+
+<footer style="position: relative; width: 100%;">
+    <div class="container">
+        <p class="text-center">&copy; 2024 Magnus Eide. Alle rettigheter forbeholdt.</p>
+    </div>
+</footer>
+<script src="static/script.js"></script>
+
+<div class="mqtt-popup" id="mqtt-popup">
+    <div class="mqtt-popup-content">
+        <h4>Eksempel på MQTT-emne: <span id="mqtt-topic-name"></span></h4>
+        <pre><code id="mqtt-example"></code></pre>
+    </div>
+</div>
+
+</body>
+</html> 

@@ -39,33 +39,44 @@ header {
 .header-top {
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Align items at the top */
     justify-content: space-between;
 }
 
 .header-center {
     text-align: center;
 }
+
 .header-center h1 {
     margin: 10px;
 }
+
 .header-left {
     text-align: left;
     max-width: 100px;
 }
+
 .header-right {
-    text-align: right;
+    display: flex;
+    flex-direction: column;  /* Change to column to stack vertically */
+    justify-content: flex-start;
+    align-items: center;     /* Center items horizontally */
     max-width: 100px;
+    gap: 5px;               /* Add space between buttons */
+}
+
+p {
+    margin-bottom: 1em;
 }
 
 a {
-    color: var(--text-color); /* Replace with your desired color (e.g., orange) */
+    color: #171770;
 }
 
 /* Change color on hover */
 a:hover {
     color: var(--text-color);
-    text-decoration: underline; /* Add underline on hover if desired */
+    text-decoration: underline;
 }
 
 .nav-tabs {
@@ -76,7 +87,7 @@ a:hover {
 }
 
 .nav-item {
-    margin: 0 5px;
+    margin: 0 4px;
 }
 
 .nav-link {
@@ -114,15 +125,37 @@ section {
 
 .image-container img {
     width: 100%;
-    max-width: 800px;
+    max-width: 700px;
     min-width: 300px;
     height: auto;
 }
+
+.video-container {
+    position: relative;
+    width: 100%; /* Scales to the container's width */
+    padding-bottom: 56.25%; /* Aspect ratio: 16:9 (height = width * 9/16) */
+    background-color: white;
+    overflow: hidden;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the container */
+    height: 100%; /* Full height based on padding-bottom */
+    border: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
 
 .input-group {
     display: flex;
     flex-direction: row; /* Align children horizontally */
     align-items: center; /* Align items to the start */
+
 }
 
 input {
@@ -143,6 +176,7 @@ input {
 }
 
 button {
+
     background-color: #007bff; /* Bootstrap primary color */
     color: white;              /* Text color */
     border: none;              /* Remove default border */
@@ -171,5 +205,73 @@ footer {
     margin-top: auto;
 }
 
+html {
+    scroll-behavior: smooth;
+}
 
+.language-switcher {
+    margin-right: 0;        /* Remove right margin since we're stacking vertically */
+    margin-bottom: 5px;     /* Add some space below the language switcher */
+}
+
+.lang-button {
+    background: none;
+    border: none;
+    padding: 5px;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.lang-button:hover {
+    background: none;
+    transform: scale(1.1);
+}
+
+.flag-icon {
+    width: 24px;
+    height: 16px;
+    border-radius: 2px;
+}
+
+/* Optional: Make the buttons the same width */
+.lang-button, #theme-toggle {
+    width: 34px;            /* Set a fixed width for both buttons */
+    height: 34px;           /* Set a fixed height for both buttons */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.mqtt-topic {
+    color: #171770;
+    cursor: pointer;
+}
+
+.mqtt-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--main-background-color);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+.mqtt-popup-content {
+    max-width: 800px;
+}
+
+.mqtt-popup pre {
+    background: #eee;
+    color: #333;
+    padding: 20px;
+    border-radius: 4px;
+}
 

@@ -4,7 +4,7 @@
 }
 
 header {
-    background-color: var(--main-background-color);
+    background-color: #333;
 
 }
 
@@ -14,7 +14,16 @@ body {
     display: flex;
 }
 
+
+a {
+    color: #afafe9;
+}
+
 .image-container {
+    background-color: #444;
+}
+
+.video-container {
     background-color: #444;
 }
 
@@ -33,21 +42,44 @@ button:hover {
     background-color: #555; /* Darker shade for hover */
 }
 
-.nav-link {
-    color: #094cf6;
+
+
+
+.nav-link:hover, .nav-link.active {
+    /*background-color: #eee;*/
+    color: #111;
+    border-color: #dee2e6 #dee2e6 #fff;
 }
 
-nav-tabs{
-    /*background-color: var(--main-background-color);*/
-    color: #68737d;
-    background: linear-gradient(0deg, transparent, #191919);
 
-}
 
 
 footer {
     /*background-color: #222;*/
     color: #ddd;
+}
+
+.image-container img[src$=".svg"] {
+    filter: invert(1);
+}
+
+.mqtt-popup {
+    background: #333;
+    color: #ddd;
+}
+
+.mqtt-popup pre {
+    background: #222;
+    color: #ddd;
+}
+
+/* Make sure MQTT topic links follow theme colors */
+.mqtt-topic {
+    color: #afafe9;
+}
+
+.mqtt-topic:hover {
+    color: #cfcfff;
 }
 
 
