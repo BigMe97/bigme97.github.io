@@ -4,10 +4,10 @@ import threading
 import pyodbc
 
 # Database connection details
-server = 'process-control-server.database.windows.net'
+server = 'Database Host Name'
 database = 'processControllDB'
-username = 'sys_admin'
-password = 'WorldsBestPassword007'
+username = 'sql username'
+password = 'sql password'
 connection_string = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
 
 # Thread-local storage for database connection and cursor
