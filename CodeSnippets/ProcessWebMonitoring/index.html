@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Heater Control Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="static/dark-styles.css" id="dark-styles" disabled>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+
+</head>
+<header style="position: relative; width: 100%;">
+    <div style="display: flex; justify-content: flex-end;">
+        <button id="theme-toggle">Dark Mode</button>
+    </div>
+</header>
+<body>
+<div class="container">
+    <h1 class="mt-5">Temperature Control System</h1>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="controller-tab" data-toggle="tab" href="#controller" role="tab"
+               aria-controls="controller" aria-selected="true">Controller</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="history-tab" data-toggle="tab" href="#history" role="tab" aria-controls="history"
+               aria-selected="false">Historical Data</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="info-tab" data-toggle="tab" href="#info" role="tab" aria-controls="info"
+               aria-selected="false">Info</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <!-- Controller Tab -->
+        <div class="tab-pane fade show active" id="controller" role="tabpanel" aria-labelledby="controller-tab">
+
+            <div class="mt-3">
+                <h4>Select Device</h4>
+                <select id="device-dropdown" class="form-control">
+                    {% for device in devices %}
+                    <option value="{{ device[0] }}">{{ device[1] }}</option>  <!-- device[0] is the ID, device[1] is the device_name -->
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mt-3">
+                <h3>Current Temperature: <span id="current_temperature">--</span>&deg;C</h3>
+                <p>Last updated: <span id="last_updated">--</span></p>
+            </div>
+
+            <div class="mt-3">
+                <h4>Setpoint (Adjust temperature):</h4>
+                <div class="slider-container">
+                    <input type="range" id="setpoint-slider" min="5" max="60" value="30.0" step="0.1">
+                    <p>Setpoint: <span id="setpoint-value">30.0°C</span></p>
+                </div>
+            </div>
+
+            <!-- PID Controller Settings -->
+            <div class="mt-3">
+                <h4>PID Controller Settings:</h4>
+
+                <!-- Kp -->
+                <p class="adjustment-text">Kp (Proportional)</p>
+                <div class="grid-container">
+                    <p class="alarm-text"><span id="pid_kp_value">1.0</span></p>
+                    <div class="btn-group">
+                        <button class="btn btn-adjust" type="button" onclick="adjust_kp(-0.1)">-</button>
+                        <button class="btn btn-adjust" type="button" onclick="adjust_kp(0.1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Ki -->
+                <p class="adjustment-text">Ti (Integral)</p>
+                <div class="grid-container">
+                    <p class="alarm-text"><span id="pid_ti_value">0.1</span></p>
+                    <div class="btn-group">
+                        <button class="btn btn-adjust" type="button" onclick="adjust_ti(-0.1)">-</button>
+                        <button class="btn btn-adjust" type="button" onclick="adjust_ti(0.1)">+</button>
+                    </div>
+                </div>
+
+                <!-- Kd -->
+                <p class="adjustment-text">Td (Derivative)</p>
+                <div class="grid-container">
+                    <p class="alarm-text"><span id="pid_td_value">0.01</span></p>
+                    <div class="btn-group">
+                        <button class="btn btn-adjust" type="button" onclick="adjust_td(-0.1)">-</button>
+                        <button class="btn btn-adjust" type="button" onclick="adjust_td(0.1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Settings -->
+            <div class="mt-3">
+                <h4>Filter Settings:</h4>
+                <p class="adjustment-text">Alpha (Filter Coefficient)</p>
+                <div class="grid-container">
+                    <p class="alarm-text"><span id="filter_alpha">0.1</span></p>
+                    <div class="btn-group">
+                        <button class="btn btn-adjust" type="button" onclick="adjust_filter(-0.01)">-</button>
+                        <button class="btn btn-adjust" type="button" onclick="adjust_filter(0.01)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Data Tab -->
+        <div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
+            <div class="mt-3">
+                <h3>Historical Data</h3>
+                <div class="chart-container">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+                </div>
+                <div class="mt-3">
+                    <label for="start_datetime">Choose date: From:</label>
+                    <input type="datetime-local" id="start_datetime" name="start_datetime" min="2024-01-01T00:00"/>
+
+                    <label for="end_datetime"> To:</label>
+                    <input type="datetime-local" id="end_datetime" name="end_datetime" min="2024-01-01T00:00"/>
+
+                    <button type="button" onclick="getHistoricalData()">Update</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Tab -->
+        <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+            <div class="mt-3">
+                <h3>Information</h3>
+                <p>Welcome to the <strong>Temperature monitor</strong>. This web-based Human-Machine Interface
+                    (HMI) allows you to monitor current and historical data from the process. Here's what you
+                    can do on this platform:</p>
+
+                <h4>Status Monitoring</h4>
+                <p>In the <strong>Status</strong> tab, you can view the current temperature in real-time, along with the
+                    last updated time. You will also see if there are any active alarms, alerting you when the
+                    temperature goes outside the set boundaries.</p>
+
+                <h4>Historical Data</h4>
+                <p>The <strong>Historical Data</strong> tab allows you to analyze past temperature readings. You can
+                    select a custom date range to fetch historical data and visualize it in a dynamic graph.</p>
+
+                <h4>How it Works</h4>
+                <p>The system connects to a backend SQL server that is continuously updated from a local application.</p>
+
+                <h4>Dark Mode Toggle</h4>
+                <p>You can switch between light and dark modes using the <strong>Dark Mode</strong> button in the
+                    top-right corner, allowing you to choose a theme that’s more comfortable for you.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer style="position: relative; width: 100%;">
+    <div class="container">
+        <p class="text-center">&copy; 2024 Magnus Eide. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- External JS Script -->
+<script src="static/script.js"></script>
+<script src="static/Chart.js"></script>
+
+</body>
+</html>
