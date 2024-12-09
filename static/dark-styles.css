@@ -82,4 +82,47 @@ footer {
     color: #cfcfff;
 }
 
+.code-snippet {
+    background: #2d2d2d;
+    border-color: #444;
+}
+
+.code-snippet pre {
+    background: #2d2d2d;
+}
+
+/* Override Prism theme in dark mode */
+body .code-snippet pre[class*="language-"],
+body .code-snippet code[class*="language-"] {
+    background: #2d2d2d;
+    color: #ddd;
+    text-shadow: none;
+}
+
+.expand-code {
+    border-top-color: #444;
+    color: var(--text-color);
+}
+
+.expand-code:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+
+/* Dark theme scrollbar */
+::-webkit-scrollbar-track {
+    background: #1d1d1d;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444;
+    
+}
+
+/* For Firefox */
+* {
+    scrollbar-color: #444 #1d1d1d;
+}
+
+
 

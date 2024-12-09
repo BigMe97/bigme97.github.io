@@ -6,13 +6,27 @@
     <link rel="icon" href="static/favicon.png" type="image/png">
     <title>Prosesskontroll Fra Webapplikasjon</title>
 
+    <!-- Bootstrap and core styles -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Prism CSS and JS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-arduino.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    
+    <!-- Your custom styles -->
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="static/dark-styles.css" id="dark-styles" disabled>
+    
+    <!-- Other scripts -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -26,11 +40,11 @@
         <div class="header-right">
             <div class="language-switcher">
                 <button class="lang-button" onclick="window.location.href='index.html'" aria-label="Bytt til engelsk">
-                    <img src="static/gb-flag.svg" alt="Britisk flagg" class="flag-icon">
+                    <img src="static/gb-flag.svg" alt="Engelsk flagg" class="flag-icon">
                 </button>
             </div>
             <div class="theme-switcher">
-                <button id="theme-toggle" aria-label="Bytt Mørk Modus">
+                <button id="theme-toggle" aria-label="Veksle mørk modus">
                     <i class="fas fa-moon"></i>
                 </button>
             </div>
@@ -150,9 +164,24 @@
             Raspberry Pi 5 fungerer som hovedkontroller, og håndterer...
         </p>
 
+        <div class="code-snippet" data-code-src="CodeSnippets/ESP8266_Controller.ino"></div>
+            <pre><code class="language-cpp"></code></pre>
+            <button class="expand-code" aria-label="Vis full kode">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+
         <div class="image-container" id="img_raspberrypi5">
             <img src="static/Raspberry-Pi-5.png" alt="RaspberryPi" class="img-fluid" style="max-width: 400px">
             <p>Raspberry Pi 5 fungerer som grensesnittet mellom MQTT og SQL-databasen...</p>
+        </div>
+
+        
+        <div class="code-snippet" data-code-src="CodeSnippets/mqttsqlinterface.py">
+            <pre><code class="language-python"></code></pre>
+            <button class="expand-code" aria-label="Vis full kode">
+                <i class="fas fa-chevron-down"></i>
+            </button>
         </div>
     </section>
 
@@ -177,7 +206,6 @@
         <p class="text-center">&copy; 2024 Magnus Eide. Alle rettigheter forbeholdt.</p>
     </div>
 </footer>
-<script src="static/script.js"></script>
 
 <div class="mqtt-popup" id="mqtt-popup">
     <div class="mqtt-popup-content">
@@ -186,5 +214,6 @@
     </div>
 </div>
 
+<script src="static/script.js"></script>
 </body>
 </html> 

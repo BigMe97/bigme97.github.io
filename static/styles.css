@@ -11,7 +11,7 @@ body {
     color: #000000; /* black text */
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 500px;
     min-width: 615px;
     margin: 0;
     padding: 0;
@@ -273,5 +273,100 @@ html {
     color: #333;
     padding: 20px;
     border-radius: 4px;
+}
+
+.code-snippet {
+    background: var(--main-background-color);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 1em 0;
+    position: relative;
+}
+
+.code-snippet pre {
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    transition: max-height 1.0s ease;
+    padding: 1em;
+    background: #f5f5f5;
+}
+
+/* Override Prism theme for light mode */
+.code-snippet code[class*="language-"],
+.code-snippet pre[class*="language-"] {
+    color: #333;
+    background: #f5f5f5;
+    text-shadow: none;
+}
+
+.code-snippet .token.comment,
+.code-snippet .token.prolog,
+.code-snippet .token.doctype,
+.code-snippet .token.cdata {
+    color: #998;
+    font-style: italic;
+}
+
+.code-snippet .token.function {
+    color: #900;
+}
+
+.code-snippet .token.keyword {
+    color: #07a;
+}
+
+.code-snippet .token.string {
+    color: #690;
+}
+
+.code-snippet .token.number {
+    color: #905;
+}
+
+.code-snippet.expanded pre {
+    max-height: none;
+}
+
+.expand-code {
+    width: 98%;
+    padding: 0.25em;
+    border: none;
+    border-top: 1px solid #ddd;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    position: sticky;
+    bottom: 0;
+    margin: 0 auto;
+    display: block;
+}
+
+.expand-code:hover {
+    background: rgba(0,0,0,0.05);
+}
+
+.expand-code i {
+    transition: transform 0.5s ease;
+}
+
+.expand-code.expanded i {
+    transform: rotate(180deg);
+}
+
+/* Light theme scrollbar */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    
+}
+
+
+/* For Firefox */
+* {
+    scrollbar-color: #c1c1c1 #f1f1f1;
 }
 
