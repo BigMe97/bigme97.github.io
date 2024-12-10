@@ -4,6 +4,7 @@
 :root {
     --main-background-color: #f9f9f9;
     --text-color: #000000;
+    --button-color: #007bff;
 }
 
 body {
@@ -18,7 +19,7 @@ body {
 }
 
 header {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
     right: 0;
@@ -29,18 +30,28 @@ header {
     justify-content: space-between;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 1200px;
+    max-width: 1400px;
     min-width: 615px;
     margin: 0 auto;
     width: 100%;
     z-index: 1000;
+    
 }
 
 .header-top {
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+    max-height: 100px;
+    opacity: 1;
     width: 100%;
     display: flex;
     align-items: flex-start; /* Align items at the top */
     justify-content: space-between;
+    overflow: hidden;
+}
+
+.header-top.collapsed {
+    max-height: 0;
+    opacity: 0;
 }
 
 .header-center {
@@ -71,6 +82,10 @@ p {
 
 a {
     color: #171770;
+}
+
+h3, h2 {
+    margin-top: 60px;
 }
 
 /* Change color on hover */
@@ -105,13 +120,13 @@ a:hover {
 }
 
 .container {
-    margin-top: 120px; /* Adjust this value based on the combined height of your header and nav-tabs */
+    margin-top: 10px; /* Adjust this value based on the combined height of your header and nav-tabs */
     padding: 20px;
 }
 
 section {
-    padding-top: 150px; /* Space to accommodate fixed header during navigation */
-    margin-top: -120px; /* Negative margin aligns the section properly */
+    padding-top: 120px; /* Adjust this value based on your header height */
+    margin-top: -120px; /* Negative margin to offset the padding */
 }
 
 .image-container {
@@ -177,7 +192,7 @@ input {
 
 button {
 
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: var(--button-color); /* Bootstrap primary color */
     color: white;              /* Text color */
     border: none;              /* Remove default border */
     border-radius: 5px;       /* Rounded corners */
@@ -230,7 +245,7 @@ html {
 }
 
 .flag-icon {
-    width: 24px;
+    width: 23px;
     height: 16px;
     border-radius: 2px;
 }
@@ -276,11 +291,10 @@ html {
 }
 
 .code-snippet {
-    background: var(--main-background-color);
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin: 1em 0;
-    position: relative;
+    background: #f1f1f1;
+    margin-top: 1em;
 }
 
 .code-snippet pre {
@@ -329,7 +343,7 @@ html {
 }
 
 .expand-code {
-    width: 98%;
+    width: 100%;
     padding: 0.25em;
     border: none;
     border-top: 1px solid #ddd;
@@ -340,6 +354,7 @@ html {
     bottom: 0;
     margin: 0 auto;
     display: block;
+    text-align: center;
 }
 
 .expand-code:hover {
@@ -350,8 +365,8 @@ html {
     transition: transform 0.5s ease;
 }
 
-.expand-code.expanded i {
-    transform: rotate(180deg);
+.code-snippet-content.expanded pre {
+    max-height: none;
 }
 
 /* Light theme scrollbar */
@@ -368,5 +383,104 @@ html {
 /* For Firefox */
 * {
     scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+/* Language label styling */
+.code-language-label {
+    background: var(--button-color);
+    color: #fff;
+    padding: 0.3em 0.8em;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.9em;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.code-language-label i {
+    margin-right: 0.5em;
+}
+
+/* File name title styling */
+.code-file-title {
+    background: #f1f1f1;
+    color: #333;
+    padding: 0.3em 0.8em;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+/* Combined file name and language label styling */
+.code-info-label {
+    background: #f1f1f1;
+    color: #333;
+    padding: 0.3em 0.8em;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.9em;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+    border-bottom: none;
+}
+
+.code-info-label i {
+    margin-right: 0.5em;
+}
+
+/* Integrated tab styling inside code snippet */
+.code-tabs {
+    margin-top: 1em;
+}
+
+.tab-list {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    background: #f1f1f1;
+    border-radius: 4px 4px 0 0;
+}
+
+.tab-item {
+    padding: 0.5em 1em;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-bottom: none;
+    background: #f1f1f1;
+    margin-right: 0.5em;
+    border-radius: 4px 4px 0 0;
+    display: flex;
+    align-items: center;
+}
+
+.tab-item i {
+    margin-right: 0.5em;
+}
+
+.tab-item.active {
+    background: #fff;
+    font-weight: bold;
+}
+
+.tab-content {
+    padding: 1em;
+    background: #fff;
+    border-radius: 0 0 4px 4px;
+}
+
+.code-snippet-content pre {
+    max-height: 150px; /* Set a default max-height */
+    overflow-y: auto;
+    transition: max-height 0.5s ease;
+}
+
+.code-snippet-content.expanded pre {
+    max-height: none; /* Allow full expansion */
 }
 

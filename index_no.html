@@ -9,7 +9,8 @@
     <!-- Bootstrap and core styles -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Prism CSS and JS -->
+    <!-- Prism CSS and JS - Note the order is important -->
+    <!-- for highlighting code snippets -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -18,8 +19,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-arduino.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
     
-    <!-- Your custom styles -->
+    <!-- custom styles -->
     <link rel="stylesheet" href="static/styles.css">
     <link rel="stylesheet" href="static/dark-styles.css" id="dark-styles" disabled>
     
@@ -27,7 +32,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/brands.min.css">
+
 </head>
 <body>
 <header>
@@ -40,7 +47,7 @@
         <div class="header-right">
             <div class="language-switcher">
                 <button class="lang-button" onclick="window.location.href='index.html'" aria-label="Bytt til engelsk">
-                    <img src="static/gb-flag.svg" alt="Engelsk flagg" class="flag-icon">
+                    <img src="static/en-flag.svg" alt="Engelsk flagg" class="flag-icon">
                 </button>
             </div>
             <div class="theme-switcher">
@@ -51,9 +58,6 @@
         </div>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist" aria-label="Innholdsnavigasjon">
-        <li class="nav-item">
-            <a class="nav-link active" id="video-tab" href="#video" role="tab" aria-controls="video" aria-selected="true">Video</a>
-        </li>
         <li class="nav-item">
             <a class="nav-link" id="intro-tab" href="#introduction" role="tab" aria-controls="intro" aria-selected="false">Introduksjon</a>
         </li>
@@ -73,52 +77,52 @@
 </header>
 
 <div class="container">
-    <section id="video">
-        <h2>Video</h2>
-        <p>Denne videoen går gjennom prosjektet, med kode, og viser systemet i drift.</p>
-        <div class="video-container">
-            <iframe
-                src="https://www.youtube.com/embed/BMDEhstkpa0"
-                title="YouTube video avspiller"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-            </iframe>
-        </div>
-    </section>
+    <!-- Content sections -->
+    
 
     <section id="introduction">
         <h2>Introduksjon</h2>
         <p>
-            Prosjektet hadde som mål å lage et kontrollsystem for en luftvarmer ved hjelp av en webapplikasjon som brukergrensesnitt.
-            Det er fire hovedaspekter ved den endelige løsningen som vises i <a href="#img_system_sketch">systemskissen</a> nedenfor.
-            Til venstre er selve kontrolleren, i midten et grensesnitt mellom kontrollerne og SQL-databasen.
-            Til høyre er selve databasen og en nettside som viser systemets nåværende status og lar brukeren kontrollere systemet.
-            Disse tjenestene er hostet i Azure og kan nås fra enhver internettilkoblet enhet.
+            Prosjektet gikk ut på å lage en kontrollsystem for en luftvarmer ved hjelp av en webapplikasjon som brukerinterface.
+            Det er fire hovedaspekter på den endelige løsningen som vises i <a href="#img_system_sketch">systemskissen</a> nedenfor.
+            Til venstre er kontrolleren selv, i midten en grensesnitt mellom kontrollere og sql-databasen.
+            Til høyre er databasen selv og en webside som viser statusen til systemet, og lar brukeren kontrollere systemet.
+            Disse tjenesterne er hostet i azure og kan tilgås fra ethvert internett-tilkoblet enhet.
+
         </p>
         <div class="image-container" id="img_system_sketch">
-            <img src="static/SystemSketch3.png" alt="System_Skisse" class="img-fluid">
-            <p>Oversikt over systemarkitekturen med lokalt hostede tjenester til venstre og Azure-hostede tjenester til høyre.</p>
+            <img src="static/SystemSketch3.png" alt="System_Sketch" class="img-fluid">
+            <p>Overview of the system architecture with locally hosted services on the left, and Azure hosted services on the right.</p>
         </div>
+
+
     </section>
+
+
+
 
     <section id="methods">
         <h2>Metoder</h2>
         
-        <h3>Kontroller</h3>
+        <h3>Kontrolleren</h3>
         <p>
-            Systemets kontroller er en ESP8266 mikrokontroller, vist i <a href="#img_esp8266">bildet nedenfor</a>. 
-            Den er ansvarlig for å lese temperaturen fra sensoren og kontrollere effekten til varmeelementet. 
-            ESP8266 er en liten datamaskin med wifi- og bluetooth-kapabiliteter, kortet som brukes i dette prosjektet måler kun 35mm x 26mm.
-            Den drives av en 5V strømforsyning, men kan bare gi ut 3,3V,
-            derfor brukes en spenningsdeler for å redusere spenningen fra temperatursensoren, 
-            og en digital-til-analog-omformer (DAC) brukes til å kontrollere effekten til varmeelementet.
-            DAC-en er en mcp4725, og spenningsdeleren er en krets laget av fem identiske motstander.
+            Kontrolleren til systemet er en ESP8266-mikrokontroller, vist i <a href="#img_esp8266">bildet nedenfor</a>. 
+            Den er ansvarlig for å lese temperaturen fra sensoren og kontrollere strømmen til varmeelementet. 
+            ESP8266 er en liten computer som har wifi og bluetooth-funksjoner, og måleenheten i dette prosjektet måler bare 35mm x 26mm.
+            Den er koplet til en 5V-forsyning, men kan kun outputte 3.3V,
+            derfor brukes en spenningsdeler for å redusere spenningen fra temperaturensensoren, 
+            The controller of the system is a ESP8266 microcontroller, shown in the <a href="#img_esp8266">image below</a>. 
+            It is responsible for reading the temperature from the sensor and controllling the power to the heater element. 
+            The ESP8266 is a tiny computer that has wifi and bluetooth capabilities, the board used in this project measures only 35mm x 26mm.
+            It is powered by a 5V supply but can only output 3.3V,
+            therefor a voltage divider is used to step down the voltage from the temperature sensor, 
+            and a digital to analog converter (DAC) is used to control the power to the heater element.
+            
         </p>
         <p>
-            Som kontrolleralgoritme brukes en PID-kontroller. Det er en veldig enkel kontroller som er lett å implementere og forstå.
-            I C++ kan den implementeres som en klasse som vist i koden nedenfor.
-            PID-parametrene kan endres ved å publisere en ny verdi til MQTT-emnet 
+            As a controller algorithm a PID controller is used. It is a very simple controller that is easy to implement and understand.
+            In C++ it can be implemented as a class like in the code below.
+            The PID parameters can be changed by publishing a new value to the MQTT topic 
             <a href="#" class="mqtt-topic" data-topic="airheater/PID" data-example='{
                 "sensorID": "AirHeaterOne",
                 "timestamp": 1710945600,
@@ -126,16 +130,16 @@
                 "tI": 100000.0,
                 "tD": 0.0
             }'>airheater/PID</a>.
-            For å holde MQTT-emnene ryddige er alle emnene prefikset med "airheater/" 
-            og en unik enhetsidentifikator i JSON-lasten for å skille mellom flere kontrollere.
-            Kontrolleren publiserer også sin tilstand til MQTT-emnene 
+            To make the MQTT topics tidy all the topics are prefixed with "airheater/" 
+            and a unique device identifier in the JSON payload to distinguish between multiple controllers.
+            The controller is also publishing its state to the MQTT topics 
             <a href="#" class="mqtt-topic" data-topic="airheater/temperature" data-example='{
                 "sensorID": "AirHeaterOne",
                 "timestamp": 1710945600,
                 "temperature": 20.1,
                 "unit": "C"
             }'>airheater/temperature</a>
-             og 
+             and 
             <a href="#" class="mqtt-topic" data-topic="airheater/controls" data-example='{
                 "sensorID": "AirHeaterOne",
                 "timestamp": 1710945600,
@@ -144,76 +148,300 @@
                 "fanPower": 3.0,
                 "fanUnit": "V"
             }'>airheater/controls</a>.
+            
+
         </p>
 
         <div class="image-container" id="img_esp8266">
             <img src="static/ESP8266.png" alt="ESP8266" class="img-fluid" style="max-width: 400px">
-            <p>ESP8266 mikrokontrolleren er ansvarlig for...</p>
+            <p>The ESP8266 microcontroller is responsible for...</p>
         </div>
-
         <p>
-            Spenningsdeleren er en krets laget av fem identiske motstander.
+            The voltage divider is a circuit made out of five identical resistors.
         </p>
         <div class="image-container" id="img_voltage_divider">
-            <img src="static/VoltageDevider.svg" alt="Spenningsdeler" class="img-fluid" style="max-width: 400px">
-            <p>Spenningsdeleren er en krets laget av fem identiske motstander.</p>
+            <img src="static/VoltageDevider.svg" alt="Voltage_Divider" class="img-fluid" style="max-width: 400px">
+            <p>The voltage devider is a circuit made out of five identical resistors.</p>
         </div>
 
-        <h3>SQL-MQTT grensesnitt</h3>
+        <p>The code for the controller is shown below.</p>
+    
+        <!-- Code Snippet for the controller -->
+        <div class="code-snippet">
+            <div class="tab-list">
+                <div class="tab-item active" data-tab="snippet-ESP8266_Controller">
+                    <i class="fas fa-microchip"></i>ESP8266_Controller.ino
+                </div>
+                <div class="tab-item" data-tab="snippet-MQTT">
+                    <i class="fas fa-microchip"></i>MQTT.ino
+                </div>
+                <div class="tab-item" data-tab="snippet-TimeAndWiFi">
+                    <i class="fas fa-microchip"></i>TimeAndWiFi.ino
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="code-snippet-content" id="snippet-ESP8266_Controller" data-code-src="CodeSnippets/ESP8266_Controller.ino">
+                    <pre><code class="language-cpp"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-MQTT" data-code-src="CodeSnippets/MQTT.ino" style="display: none;">
+                    <pre><code class="language-cpp"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-TimeAndWiFi" data-code-src="CodeSnippets/TimeAndWiFi.ino" style="display: none;">
+                    <pre><code class="language-cpp"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <h3>Local Server</h3>
+
         <p>
-            Raspberry Pi 5 fungerer som hovedkontroller, og håndterer...
-        </p>
+            To make the system more flexible and easy to use, a separate application is used as a interface between MQTT and the sql database.
+            In this project the Raspberry Pi 5 is used, but it could be any other device that can run a python application and host a MQTT broker.
+            The interface application had to be able to read messages from multiple controllers and store them in the database.
 
-        <div class="code-snippet" data-code-src="CodeSnippets/ESP8266_Controller.ino"></div>
-            <pre><code class="language-cpp"></code></pre>
-            <button class="expand-code" aria-label="Vis full kode">
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </div>
+
+        </p>
 
         <div class="image-container" id="img_raspberrypi5">
             <img src="static/Raspberry-Pi-5.png" alt="RaspberryPi" class="img-fluid" style="max-width: 400px">
-            <p>Raspberry Pi 5 fungerer som grensesnittet mellom MQTT og SQL-databasen...</p>
+            <p>The Raspberry Pi 5 serves as the interface between mqtt and the sql database...</p>
         </div>
+
+
+        <!-- Code Snippet for the MQTT-SQL interface -->
+        <div class="code-snippet">
+            <div class="tab-list">
+                <div class="tab-item active" data-tab="snippet-mqttsqlinterface">
+                    <i class="fab fa-python"></i>mqttsqlinterface.py
+                </div>
+                <div class="tab-item" data-tab="snippet-mqtt_functions">
+                    <i class="fab fa-python"></i>mqtt_functions.py
+                </div>
+                <div class="tab-item" data-tab="snippet-sql_functions">
+                    <i class="fab fa-python"></i>sql_functions.py
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="code-snippet-content" id="snippet-mqttsqlinterface" data-code-src="CodeSnippets/mqttsqlinterface.py">
+                    <pre><code class="language-python"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-mqtt_functions" data-code-src="CodeSnippets/mqtt_functions.py" style="display: none;">
+                    <pre><code class="language-python"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-sql_functions" data-code-src="CodeSnippets/sql_functions.py" style="display: none;">
+                    <pre><code class="language-python"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <h3>Cloud Server</h3>
+
+        <h4>SQL Database</h4>
+        <p>
+            The SQL database is used to store the data to and from the controllers.
+            In this project this includes the temperature and power data from the controllers,
+            the PID parameters and filter parameters for the controllers, and the desired temperature setpoints.
+            The database is hosted in Azure, and is therefore accessible from any internet connected device.
+            To improve the security of the database, a firewall is used to only allow specific ip addresses to access the database.
+            This is a default setting in Azure, and is a simple yet effective way to secure the database .
+            
+        </p>
+
+        <p>
+            The SQL database consists of five tables, one that contains the static device data and that can be used to identify the device.
+            The other four tables contains the control data for the controllers, with a timestamp and a unique identifier for the device.
+            This helps separate the input and output for each device but also makes the database more flexible 
+            allowing for different types of data to be stored using the same tables.
+
+        </p>
+        <div class="image-container" id="img_SQL_database">
+            <img src="static/Airheater DB.png" alt="SQL_Database" class="img-fluid" >
+            <p>The database can have data from multiple devices, and multiple recordings of the same device.</p>
+        </div>
+
+        <!-- Code Snippet for the SQL database -->
+        <div class="code-snippet">
+            <div class="tab-list">
+                <div class="tab-item active" data-tab="snippet-Sql_creation">
+                    <i class="fas fa-database"></i>Sql-creation.sql
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="code-snippet-content" id="snippet-Sql_creation" data-code-src="CodeSnippets/Sql_creation.sql">
+                    <pre><code class="language-sql"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <p>
+            In addition to the tables, there is also a view that is used to simplify the process of updating the web page and the controllers.
+            The view is called "LatestValuesToDevices" and it contains the latest recorded values for each device.
+            Requesting the last recorded timestamp from this view lets the mqtt interface and the web page to know if the data has been 
+            updated since the last request.
+            
+
+            
+        
+        </p>
+
+        <h4>User Interface</h4>
+        <p>
+            The user interface is a web application that is hosted in Azure.
+            It is accessed through a web browser on any internet connected device.
+            The webpage displays the current status of the system, and allows the user to control the system.
+        </p>
+
+        <!-- Code Snippet for the web application -->
+        <div class="code-snippet">
+            <div class="tab-list">
+                <div class="tab-item active" data-tab="snippet-app">
+                    <i class="fab fa-python"></i>app.py
+                </div>
+                <div class="tab-item" data-tab="snippet-sql_functions_web">
+                    <i class="fab fa-python"></i>sql_functions.py
+                </div>
+                <div class="tab-item" data-tab="snippet-index">
+                    <i class="fab fa-html5"></i>index.html
+                </div>
+                <div class="tab-item" data-tab="snippet-script">
+                    <i class="fab fa-javascript"></i>script.js
+                </div>
+                <div class="tab-item" data-tab="snippet-style">
+                    <i class="fab fa-css3"></i>styles.css
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="code-snippet-content" id="snippet-app" data-code-src="CodeSnippets/ProcessWebMonitoring/app.py">
+                    <pre><code class="language-python"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-sql_functions_web" data-code-src="CodeSnippets/ProcessWebMonitoring/sql_functions.py" style="display: none;">
+                    <pre><code class="language-python"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-index" data-code-src="CodeSnippets/ProcessWebMonitoring/index.html" style="display: none;">
+                    <pre><code class="language-html"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-script" data-code-src="CodeSnippets/ProcessWebMonitoring/script.js" style="display: none;">
+                    <pre><code class="language-javascript"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="code-snippet-content" id="snippet-style" data-code-src="CodeSnippets/ProcessWebMonitoring/styles.css" style="display: none;">
+                    <pre><code class="language-css"></code></pre>
+                    <button class="expand-code" aria-label="Show full code">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+
 
         
-        <div class="code-snippet" data-code-src="CodeSnippets/mqttsqlinterface.py">
-            <pre><code class="language-python"></code></pre>
-            <button class="expand-code" aria-label="Vis full kode">
-                <i class="fas fa-chevron-down"></i>
-            </button>
-        </div>
     </section>
+
+
+
 
     <section id="results">
-        <h2>Resultater</h2>
-        <p>Dette er resultatseksjonen.</p>
+        <h2>Results</h2>
+        <h3>Controller</h3>
+        <p>The controller is able to control the temperature of the air heater.</p>
+        
+        <h3>SQL-MQTT interface</h3>
+        <p>The interface is able to read the temperature from the sensor and control the power to the heater element.</p>
+        
+        <h3>HMI Webpage</h3>
+        <p>The webpage is able to display the current status of the system, and allows the user to control the system.</p>
+        
+
+        <section id="video">
+            <h2>Video</h2>
+            <p>This video goes through the project, with  code, and shows the system in action.</p>
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube.com/embed/BMDEhstkpa0"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
     </section>
+
+
+
 
     <section id="discussion">
-        <h2>Diskusjon</h2>
-        <p>Dette er diskusjonsseksjonen.</p>
+        <h2>Discussion</h2>
+        <p>This is the discussion section.</p>
     </section>
 
+
+
+
     <section id="resources">
-        <h2>Ressurser</h2>
-        <p>Dette er ressursseksjonen.</p>
+        <h2>Resources</h2>
+        <p>This is the resources section.</p>
     </section>
 </div>
 
+
+
+
 <footer style="position: relative; width: 100%;">
     <div class="container">
-        <p class="text-center">&copy; 2024 Magnus Eide. Alle rettigheter forbeholdt.</p>
+        <p class="text-center">&copy; 2024 Magnus Eide. All rights reserved.</p>
     </div>
 </footer>
 
+<!-- MQTT popup -->
 <div class="mqtt-popup" id="mqtt-popup">
     <div class="mqtt-popup-content">
-        <h4>Eksempel på MQTT-emne: <span id="mqtt-topic-name"></span></h4>
+        <h4>Example of MQTT Topic: <span id="mqtt-topic-name"></span></h4>
         <pre><code id="mqtt-example"></code></pre>
     </div>
 </div>
 
 <script src="static/script.js"></script>
 </body>
-</html> 
+</html>

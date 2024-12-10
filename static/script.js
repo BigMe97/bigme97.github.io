@@ -58,19 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Code snippet expand/collapse
-    document.querySelectorAll('.code-snippet').forEach(snippet => {
-        const button = snippet.querySelector('.expand-code');
-        if (button) {
-            button.addEventListener('click', () => {
-                snippet.classList.toggle('expanded');
-                button.classList.toggle('expanded');
-            });
-        }
+    // Expand/collapse functionality
+    document.querySelectorAll('.expand-code').forEach(button => {
+        button.addEventListener('click', () => {
+            const codeSnippetContent = button.parentElement;
+            codeSnippetContent.classList.toggle('expanded');
+            button.querySelector('i').classList.toggle('fa-chevron-down');
+            button.querySelector('i').classList.toggle('fa-chevron-up');
+        });
     });
 
     // Load code files into snippets
-    document.querySelectorAll('.code-snippet[data-code-src]').forEach(async snippet => {
+    document.querySelectorAll('.code-snippet-content[data-code-src]').forEach(async snippet => {
         const codePath = snippet.dataset.codeSrc;
         const codeBlock = snippet.querySelector('code');
         
@@ -81,41 +80,51 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const code = await response.text();
             
-            // Get language from file extension
-            const fileExt = codePath.split('.').pop().toLowerCase();
-            let languageClass = 'language-';
-            
-            // Map file extensions to Prism language classes
-            switch(fileExt) {
-                case 'ino':
-                    languageClass += 'arduino';
-                    break;
-                case 'cpp':
-                case 'h':
-                case 'hpp':
-                    languageClass += 'cpp';
-                    break;
-                case 'py':
-                    languageClass += 'python';
-                    break;
-                default:
-                    languageClass += fileExt;
-            }
-            
-            // Set the language class and code content
-            codeBlock.className = languageClass;
+            // Set the code content
             codeBlock.textContent = code;
             
             // Force Prism to highlight
             Prism.highlightElement(codeBlock);
             
-            console.log('Language class:', languageClass);
-            console.log('Available Prism languages:', Object.keys(Prism.languages));
-            
         } catch (error) {
             console.error('Error loading code file:', error);
             codeBlock.textContent = '// Error loading code file';
         }
+    });
+
+    // Simple header collapse with smooth transition
+    const headerTop = document.querySelector('.header-top');
+    
+    // Initial check in case page is loaded scrolled down
+    if (window.scrollY > 0) {
+        headerTop.classList.add('collapsed');
+    }
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY === 0) {
+            // At the top of the page
+            headerTop.classList.remove('collapsed');
+        } else {
+            // Scrolled away from top
+            headerTop.classList.add('collapsed');
+        }
+    }, { passive: true });
+
+    // Tab switching functionality inside code snippet
+    document.querySelectorAll('.tab-item').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const target = tab.dataset.tab;
+            // Get the parent code snippet container
+            const codeSnippetContainer = tab.closest('.code-snippet');
+            
+            // Only affect tabs and content within this container
+            codeSnippetContainer.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            codeSnippetContainer.querySelectorAll('.code-snippet-content').forEach(snippet => snippet.style.display = 'none');
+
+            // Activate the clicked tab and show the corresponding snippet content
+            tab.classList.add('active');
+            codeSnippetContainer.querySelector(`#${target}`).style.display = 'block';
+        });
     });
 });
 
@@ -135,6 +144,51 @@ function setDarkTheme(isDarkMode) {
         icon.classList.remove('fa-sun');
         icon.classList.add('fa-moon');
     }
+}
+
+// Map file extensions to Prism language classes and labels
+switch(fileExt) {
+    case 'ino':
+        languageClass += 'arduino';
+        languageLabel = 'Arduino';
+        languageIcon = 'fas fa-microchip';
+        break;
+    case 'cpp':
+    case 'h':
+    case 'hpp':
+        languageClass += 'cpp';
+        languageLabel = 'C++';
+        languageIcon = 'fas fa-code';
+        break;
+    case 'py':
+        languageClass += 'python';
+        languageLabel = 'Python';
+        languageIcon = 'fab fa-python';
+        break;
+    case 'sql':
+        languageClass += 'sql';
+        languageLabel = 'SQL';
+        languageIcon = 'fas fa-database';
+        break;
+    case 'html':
+        languageClass += 'markup';
+        languageLabel = 'HTML';
+        languageIcon = 'fab fa-html5';
+        break;
+    case 'css':
+        languageClass += 'css';
+        languageLabel = 'CSS';
+        languageIcon = 'fab fa-css3-alt';
+        break;
+    case 'js':
+        languageClass += 'javascript';
+        languageLabel = 'JavaScript';
+        languageIcon = 'fab fa-js';
+        break;
+    default:
+        languageClass += fileExt;
+        languageLabel = fileExt.toUpperCase();
+        languageIcon = 'fas fa-file-code';
 }
 
 
