@@ -5,15 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const isDarkMode = localStorage.getItem('darkMode') === 'true';
     setDarkTheme(isDarkMode);
 
-    // Handle tab highlighting
+    // Handle tab highlighting and smooth scrolling
     const sections = document.querySelectorAll("section");
     const navLinks = document.querySelectorAll(".nav-link");
 
     const updateActiveTab = () => {
         let currentSection = null;
         sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            if (rect.top <= window.innerHeight / 2.5 && rect.bottom >= window.innerHeight / 2.5) {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < (sectionTop + sectionHeight)) {
                 currentSection = section.id;
             }
         });
@@ -28,6 +31,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
+
+    // Add smooth scrolling to nav tabs specifically
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').slice(1);
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                const targetPosition = targetElement.offsetTop;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Handle all other internal links for smooth scrolling to center
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        if (!anchor.classList.contains('nav-link')) { // Exclude nav-links
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').slice(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const targetPosition = targetElement.offsetTop - (window.innerHeight / 2) + 60;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+    });
 
     window.addEventListener("scroll", updateActiveTab);
     updateActiveTab();
@@ -124,6 +161,53 @@ document.addEventListener('DOMContentLoaded', () => {
             // Activate the clicked tab and show the corresponding snippet content
             tab.classList.add('active');
             codeSnippetContainer.querySelector(`#${target}`).style.display = 'block';
+        });
+    });
+
+    // Handle both code snippets and image references
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (!targetElement) return; // Exit if target doesn't exist
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Handle code snippets
+            if (targetId.startsWith('snippet-')) {
+                const codeContainer = targetElement.closest('.code-snippet');
+                const tabItem = codeContainer.querySelector(`[data-tab="${targetId}"]`);
+                
+                if (tabItem) {
+                    codeContainer.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+                    codeContainer.querySelectorAll('.code-snippet-content').forEach(content => content.style.display = 'none');
+                    
+                    tabItem.classList.add('active');
+                    targetElement.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        targetElement.classList.add('highlight-effect');
+                        codeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        
+                        setTimeout(() => {
+                            targetElement.classList.remove('highlight-effect');
+                        }, 1500);
+                    }, 50);
+                }
+            } 
+            // Handle image containers
+            else if (targetId.startsWith('img_')) {
+                targetElement.classList.add('highlight-effect');
+                targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                setTimeout(() => {
+                    targetElement.classList.remove('highlight-effect');
+                }, 1500);
+            }
+            
+            return false;
         });
     });
 });

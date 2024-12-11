@@ -30,6 +30,14 @@ CREATE TABLE [controller] (
 	PRIMARY KEY ([id])
 );
 
+CREATE TABLE [filter] (
+	[id] int IDENTITY(1,1) NOT NULL UNIQUE,
+	[deviceID] int NOT NULL,
+	[recorded_at] datetime NOT NULL DEFAULT GETDATE(),
+	[alpha] decimal(18,4) NOT NULL,
+	PRIMARY KEY ([id])
+);
+
 CREATE TABLE [device] (
 	[id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[device_name] nvarchar(30) NOT NULL,
@@ -39,4 +47,4 @@ CREATE TABLE [device] (
 ALTER TABLE [temperatures] ADD CONSTRAINT [temperatures_fk1] FOREIGN KEY ([deviceID]) REFERENCES [device]([id]);
 ALTER TABLE [controls] ADD CONSTRAINT [controls_fk1] FOREIGN KEY ([deviceID]) REFERENCES [device]([id]);
 ALTER TABLE [controller] ADD CONSTRAINT [controller_fk1] FOREIGN KEY ([deviceID]) REFERENCES [device]([id]);
-
+ALTER TABLE [filter] ADD CONSTRAINT [filter_fk1] FOREIGN KEY ([deviceID]) REFERENCES [device]([id]);
